@@ -1,39 +1,45 @@
+# 📥 GitHub Downloader v2
 
-GitHub Downloader v2
+A lightweight, high-performance browser extension (Manifest V3) that optimizes the asset acquisition workflow on GitHub repository and release pages.
 
-GitHub Downloader v2 is a lightweight, pure Vanilla JavaScript browser extension (Manifest V3) that streamlines GitHub's asset delivery interface. Instead of forcing users to scroll through a long list of distribution files, this extension automatically detects the user's Operating System (OS) and CPU architecture to present the correct binary package instantly.
+---
 
-Key Features
+### 🛠️ Quick Installation (Video Tutorial)
 
-• 1-Click Repo Homepage Button: Injects a native-looking download shortcut directly to the left of the green "Code" dropdown button on any codebase landing page.
-• Smart System Diagnostics: Automatically identifies platform contexts (Windows, macOS, Linux, Android) and build architectures (x64, ARM64, Universal).
-• Smart Architecture Mapping: Evaluates assets using regex arrays to instantly flag installation categories such as Installers, Portables, CLI tools, GUIs, or source archives.
-• Zero-API Web Scraper Fallback Engine: Features an embedded memory-mapped cache mechanism that gracefully bypasses GitHub’s strict 60-call hourly API rate limits. If the API limits are hit, it falls back to raw DOM processing automatically.
-• Fully I18N Native Localization: Implements complete structural text strings supporting native English (LTR) and Hebrew (RTL) directional styles.
+To install this development version manually, follow the visual setup guide demonstrated in the embedded tutorial block below:
 
-How to Install It Unpacked (Developer Mode)
+[![Watch the manual installation setup tutorial](https://youtube.com)](https://www.youtube.com/watch?v=oswjtLwCUqg "Watch installation tutorial")
 
-Because this project is community-driven and free of telemetry, tracking, or registration fees, it is distributed as an unpacked development folder.
-Follow these steps to get it running on your web browser:
+---
 
-Step 1: Secure Your Extension Workspace
+### 📸 Interface Previews
 
-Ensure your local project directory contains your matching code components:
-• manifest.json (The configuration schema)
-• content.js (The Vanilla script array provided above)
-• Optional: Image icon layers (icon16.png, icon48.png, icon128.png)
+#### Repository Homepage View
+*The shortcut action button links smoothly beside the repository's native codebase distribution tools.*
 
-Step 2: Open Chrome's Extension Management Console
+<img width="1002" height="716" alt="main" src="https://github.com/user-attachments/assets/58e0606a-f5ff-4e42-a3c5-b67e7dbb4d84" />
 
-1. Launch Google Chrome (or any Chromium-based browser like Microsoft Edge, Brave, or Opera).
-2. Type or paste chrome://extensions/ directly into your browser's URL address bar and press Enter.
+#### Releases Analytics View
+*The script hides linear asset file lists, rendering platform-sorted recommendation modules matching user hardware properties.*
 
-Step 3: Toggle Extension Developer Authorization
+<img width="998" height="753" alt="releases" src="https://github.com/user-attachments/assets/bdff90aa-0820-4aae-89dc-834ce08ab51e" />
 
-1. Locate the "Developer mode" toggle switch in the top-right corner of the Extensions dashboard page.
-2. Click the switch to toggle it ON. This unhides the structural developer testing interface tools.
 
-Step 4: Mount Your Workspace Directory
+---
 
-1. Click the "Load unpacked" action button that appears in the top-left section of the dashboard navigation header.
-2. In the file explorer pop-up window that appears, navigate to and select your main project folder containing your configuration and script files. Click Select Folder or Open.
+### ⚙️ Core Mechanics
+
+* **🔀 Homepage Shortcut Injection**
+  Adds a native-looking action button directly to the left of the primary green "Code" dropdown on the repository root directory view.
+
+* **💻 Deterministic Hardware Profiling**
+  Queries system properties to detect the active Operating System (Windows, macOS, Linux, Android) and runtime execution architecture (x64, ARM64, Universal).
+
+* **🔍 Regex-Driven Architecture Classification**
+  Evaluates asset strings dynamically using string pattern matching arrays to isolate and group distinct distribution channels (Installers, Portables, CLI execution units, GUIs, or raw source archives).
+
+* **🛡️ Zero-API Fault Recovery Architecture**
+  Maintains an internal memory cache layout to preserve rate limits. If the public GitHub API hits a 403 throttling threshold, the extension automatically transitions to reading the raw page DOM layout to fetch target link parameters.
+
+* **🌐 Bi-Directional Internationalization Interface**
+  Implements full runtime dictionary definitions supporting English (Left-to-Right layout) and Hebrew (Right-to-Left layout) system profiles.

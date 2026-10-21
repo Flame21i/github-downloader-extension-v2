@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "GitHub Downloader V2",
+  "version": "1.0.0",
+  "description": "Organizes GitHub release downloads by platform and type.",
+  "host_permissions": [
+    "https://github.com/*",
+    "https://api.github.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

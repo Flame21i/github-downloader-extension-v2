@@ -1,4 +1,10 @@
+Flame21i Public License (Source-Available)
+
 Copyright (c) 2026 Flame21i
+
+This license is derived from the MIT License but includes custom restrictions 
+regarding unmodified marketplace redistribution. It is not considered an 
+OSI-approved Open Source license.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -15,8 +21,12 @@ system may publish or distribute an exact, near-identical, or substantially
 unmodified copy of this Software to any commercial browser extension ecosystem 
 or web marketplace (including but not limited to the Chrome Web Store, Microsoft 
 Edge Add-ons, or Firefox Add-ons) if an active or equivalent listing already 
-exists, without explicit written consent from the original author. Contributions, 
-modifications, and pull requests must be directed to the primary repository.
+exists, without explicit written consent from the original author. 
+
+This restriction does not apply to significantly modified forks, independent 
+derivatives, or versions containing unique functional enhancements. Community 
+contributions, bug fixes, and direct pull requests intended for the original 
+project must be directed to the primary repository.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,

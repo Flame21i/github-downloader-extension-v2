@@ -10,10 +10,11 @@ A lightweight, high-performance browser extension (Manifest V3) that optimizes t
 
 ### 🛠️ Quick Installation (Video Tutorial)
 
-To install this development version manually, watch the visual setup guide below:
+1. ### Download & Extract the repository 
 
-# [Watch manual installation tutorial](https://www.youtube.com/watch?v=oswjtLwCUqg)
+2. ### [Watch manual installation tutorial](https://www.youtube.com/watch?v=oswjtLwCUqg)
 
+---
 
 ### ⚙️ Core Mechanics
 

@@ -1,20 +1,47 @@
 {
   "manifest_version": 3,
-  "name": "GitHub Downloader V2",
-  "version": "1.0.0",
-  "description": "Organizes GitHub release downloads by platform and type.",
-  "host_permissions": [
-    "https://github.com/*",
-    "https://api.github.com/*"
-  ],
-  "background": {
-    "service_worker": "background.js"
+  "name": "GitHub Downloader v2",
+  "version": "2.0.0",
+  "description": "A lightweight browser extension that optimizes the asset acquisition workflow on GitHub repository and release pages.",
+
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
   },
+
+  "permissions": [
+    "storage"
+  ],
+
+  "host_permissions": [
+    "https://github.com/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
+  },
+
   "content_scripts": [
     {
-      "matches": ["https://github.com/*"],
-      "js": ["content.js"],
+      "matches": [
+        "https://github.com/*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
       "run_at": "document_idle"
     }
-  ]
+  ],
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "github_downloader-v2@flame21i.addon",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  }
 }

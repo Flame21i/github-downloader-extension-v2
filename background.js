@@ -1,64 +1,85 @@
 "use strict";
 
-// Modern MV3 Service Worker for GitHub Release fetching
-
-// Regex to strictly match GitHub release API paths
 const RELEASE_ENDPOINT = /^\/repos\/[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+\/releases\/(?:latest|tags\/[^/]+)$/;
 const FETCH_TIMEOUT_MS = 10000;
 
+function isTrustedPageUrl(url) {
+  if (typeof url !== "string") return false;
+
+  try {
+    const parsed = new URL(url);
+    return (
+      parsed.protocol === "https:" &&
+      (parsed.hostname === "github.com" || parsed.hostname === "www.github.com")
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isTrustedReleaseUrl(url) {
+  if (typeof url !== "string") return false;
+
+  try {
+    const parsed = new URL(url);
+    return (
+      parsed.protocol === "https:" &&
+      parsed.hostname === "api.github.com" &&
+      parsed.search === "" &&
+      RELEASE_ENDPOINT.test(parsed.pathname)
+    );
+  } catch {
+    return false;
+  }
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  // Only process our specific message type
   if (message?.type !== "gfd:fetch-release-json") return;
 
-  // We must return true synchronously to indicate we will send a response asynchronously
+  if (typeof message.url !== "string") {
+    sendResponse({ ok: false, error: "Missing or invalid release URL" });
+    return false;
+  }
+
   handleFetchRequest(message, sender)
     .then(sendResponse)
-    .catch(error => sendResponse({ ok: false, error: error.message }));
+    .catch((error) => {
+      sendResponse({
+        ok: false,
+        error: error instanceof Error ? error.message : String(error)
+      });
+    });
 
   return true;
 });
 
 async function handleFetchRequest(message, sender) {
-  // 1. Validate the sender (must be a content script running on github.com)
-  if (!sender.url) throw new Error("Missing sender URL");
-  
-  let senderUrl, targetUrl;
-  try {
-    senderUrl = new URL(sender.url);
-    targetUrl = new URL(message.url);
-  } catch {
-    throw new Error("Invalid URL format");
+  if (!isTrustedPageUrl(sender?.url)) {
+    throw new Error("Unauthorized sender origin");
   }
 
-  // Strict origin matching prevents malicious extensions or sites from spoofing requests
-  const isSenderTrusted = senderUrl.protocol === "https:" && 
-    (senderUrl.hostname === "github.com" || senderUrl.hostname === "www.github.com");
-  
-  const isTargetTrusted = targetUrl.protocol === "https:" && 
-    targetUrl.hostname === "api.github.com" && 
-    RELEASE_ENDPOINT.test(targetUrl.pathname);
-
-  if (!isSenderTrusted || !isTargetTrusted) {
+  if (!isTrustedReleaseUrl(message.url)) {
     throw new Error("Unauthorized release API request origin or path");
   }
 
-  // 2. Setup AbortController for timeout handling
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
   try {
-    // 3. Fetch with proper GitHub API headers
-    const response = await fetch(targetUrl.href, {
+    const response = await fetch(message.url, {
       method: "GET",
+      mode: "cors",
+      credentials: "omit",
+      cache: "no-store",
       headers: {
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28"
+        Accept: "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "github-downloader-extension"
       },
       signal: controller.signal
     });
 
     if (!response.ok) {
-      // Provide useful error codes for rate limits
       if (response.status === 403 || response.status === 429) {
         throw new Error("GitHub API rate limit exceeded");
       }
@@ -67,14 +88,12 @@ async function handleFetchRequest(message, sender) {
 
     const data = await response.json();
     return { ok: true, data };
-
   } catch (error) {
-    if (error.name === "AbortError") {
+    if (error?.name === "AbortError") {
       throw new Error("Request timed out");
     }
     throw error;
   } finally {
-    // 4. Always clear the timeout to prevent memory leaks
     clearTimeout(timeoutId);
   }
 }

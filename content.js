@@ -3,7 +3,7 @@
 
   /*
    * GitHub Downloader v2
-  * Chrome MV3 extension. No external libraries, remote code, or inline event handlers.
+   * Chrome MV3 extension. No external libraries, remote code, or inline event handlers.
    */
   const EXT = "gfd";
   const STYLE_ID = "gfd-extension-styles";
@@ -20,83 +20,42 @@
   let isUpdatingDOM = false;
   let cachedUserOS = null;
 
-  const I18N = {
-    en: {
-      title: "Release assets",
-      subtitle: "Downloads organized by platform and type",
-      all: "All files",
-      installers: "Installers",
-      portable: "Portable",
-      cli: "CLI",
-      gui: "GUI",
-      source: "Source code",
-      windows: "Windows",
-      macos: "macOS",
-      linux: "Linux",
-      android: "Android",
-      other: "Other",
-      download: "Download",
-      latest: "Latest release",
-      loading: "Checking releases…",
-      noRelease: "This repository has no published releases.",
-      noCompatibleOS: "This repository has no releases compatible with your OS.",
-      noAssets: "This release has no downloadable assets.",
-      apiFallback: "Some details could not be loaded; showing available page data.",
-      viewRelease: "View release",
-      viewReleases: "View releases",
-      error: "Could not load release information.",
-      sourceArchive: "Source archive",
-      sizeUnknown: "Size unavailable",
-      assetsCount: "assets",
-      bestMatch: "Best match",
-      recommendedSystem: "Recommended for your system",
-      showMore: "Show all assets",
-      showFewer: "Show fewer assets",
-      search: "Filter assets…",
-      language: "Language",
-      sourceCode: "Source code",
-      compatVerified: "Verified compatible with",
-      compatUnavailable: "No assets compatible with your OS",
-      archDetected: "Architecture verified"
-    },
-    he: {
-      title: "קובצי ההפצה",
-      subtitle: "הורדות מסודרות לפי מערכת וסוג",
-      all: "כל הקבצים",
-      installers: "מתקינים",
-      portable: "נייד",
-      cli: "שורת פקודה",
-      gui: "ממשק גרפי",
-      source: "קוד מקור",
-      windows: "Windows",
-      macos: "macOS",
-      linux: "Linux",
-      android: "Android",
-      other: "אחר",
-      download: "הורדה",
-      latest: "הגרסה האחרונה",
-      loading: "בודק הפצות…",
-      noRelease: "למאגר זה אין הפצות שפורסמו.",
-      noCompatibleOS: "למאגר זה אין הפצה המתאימה למערכת שלך.",
-      noAssets: "בהפצה זו אין קבצים להורדה.",
-      apiFallback: "לא ניתן לטעון חלק מהפרטים; מוצגים נתוני הדף הזמינים.",
-      viewRelease: "הצגת ההפצה",
-      viewReleases: "הצגת ההפצות",
-      error: "טעינת פרטי ההפצה נכשלה.",
-      sourceArchive: "ארכיון קוד מקור",
-      sizeUnknown: "הגודל אינו זמין",
-      assetsCount: "קבצים",
-      bestMatch: "ההתאמה הטובה ביותר",
-      recommendedSystem: "מומלץ למערכת שלך",
-      showMore: "הצגת כל הקבצים",
-      showFewer: "הצגת פחות קבצים",
-      search: "סינון קבצים…",
-      language: "שפה",
-      sourceCode: "קוד מקור",
-      compatVerified: "תאימות מאומתת עבור",
-      compatUnavailable: "אין קבצים תואמים למערכת שלך",
-      archDetected: "ארכיטקטורה אומתה"
-    }
+  const MESSAGES = {
+    title: "Release assets",
+    subtitle: "Downloads organized by platform and type",
+    all: "All files",
+    installers: "Installers",
+    portable: "Portable",
+    cli: "CLI",
+    gui: "GUI",
+    source: "Source code",
+    windows: "Windows",
+    macos: "macOS",
+    linux: "Linux",
+    android: "Android",
+    other: "Other",
+    download: "Download",
+    latest: "Latest release",
+    loading: "Checking releases…",
+    noRelease: "This repository has no published releases.",
+    noCompatibleOS: "This repository has no releases compatible with your OS.",
+    noAssets: "This release has no downloadable assets.",
+    apiFallback: "Some details could not be loaded; showing available page data.",
+    viewRelease: "View release",
+    viewReleases: "View releases",
+    error: "Could not load release information.",
+    sourceArchive: "Source archive",
+    sizeUnknown: "Size unavailable",
+    assetsCount: "assets",
+    bestMatch: "Best match",
+    recommendedSystem: "Recommended for your system",
+    showMore: "Show all assets",
+    showFewer: "Show fewer assets",
+    search: "Filter assets…",
+    sourceCode: "Source code",
+    compatVerified: "Verified compatible with",
+    compatUnavailable: "No assets compatible with your OS",
+    archDetected: "Architecture verified"
   };
 
   const ICONS = {
@@ -182,16 +141,6 @@
     #${GRID_ID} .gfd-search:focus {
       outline: none;
       border-color: #58a6ff;
-    }
-    #${GRID_ID} .gfd-select {
-      border: 1px solid var(--gfd-border);
-      border-radius: 6px;
-      padding: 6px 8px;
-      background: var(--gfd-panel);
-      color: inherit;
-      font: inherit;
-      font-size: 12px;
-      cursor: pointer;
     }
 
     /* RECOMMENDED HERO CARD: ONLY VISIBLE BY DEFAULT */
@@ -589,14 +538,7 @@
     #${BUTTON_ID}[disabled] { opacity: .75; cursor: wait; }
   `;
 
-  function currentLang() {
-    const stored = (() => { try { return localStorage.getItem("gfd-language"); } catch (_) { return null; } })();
-    if (stored && I18N[stored]) return stored;
-    const pageLang = (document.documentElement.lang || navigator.language || "en").toLowerCase();
-    return pageLang.startsWith("he") ? "he" : "en";
-  }
-
-  function t(key) { return I18N[currentLang()][key] || I18N.en[key] || key; }
+  function t(key) { return MESSAGES[key] || key; }
 
   function escapeHTML(value) {
     return String(value ?? "").replace(/[&<>"']/g, ch => ({
@@ -1038,10 +980,6 @@
    * Finds the exact container for the toolbar Download button:
    * Anchors directly to the left of the green "<> Code" dropdown button.
    */
-  /**
-   * Finds the exact container for the toolbar incubator:
-   * Traces up from the Code button to locate div.Box_6__yyTyGl and inserts before Code.
-   */
   function findToolbarCodeTarget() {
     const codeBtn = Array.from(document.querySelectorAll('button'))
       .find(el => {
@@ -1081,10 +1019,7 @@
     ensureStyles();
 
     const target = findToolbarCodeTarget();
-    if (!target || !target.parent) {
-      // Safety guard: Do not render anywhere else if toolbar isn't ready
-      return;
-    }
+    if (!target || !target.parent) return;
 
     let button = document.getElementById(BUTTON_ID);
     if (button && button.isConnected) {
@@ -1108,7 +1043,10 @@
     }
 
     button.dataset.repo = repo.key;
-    target.parent.insertBefore(button, target.before);
+
+    if (button.parentElement !== target.parent || button.nextElementSibling !== target.before) {
+      target.parent.insertBefore(button, target.before);
+    }
 
     if (button.dataset.evaluatedRepo !== repo.key) {
       button.dataset.evaluatedRepo = repo.key;
@@ -1216,8 +1154,6 @@
         </a>
       </div>
     `;
-
-    const langOptions = `<option value="en"${currentLang() === "en" ? " selected" : ""}>English</option><option value="he"${currentLang() === "he" ? " selected" : ""}>עברית</option>`;
 
     let contentHTML = "";
 
@@ -1328,7 +1264,6 @@
         </div>
         <div class="gfd-tools">
           <input class="gfd-search" type="search" aria-label="${escapeHTML(t("search"))}" placeholder="${escapeHTML(t("search"))}">
-          <select class="gfd-select" aria-label="${escapeHTML(t("language"))}">${langOptions}</select>
         </div>
       </div>
       ${warning ? `<div class="gfd-notice">${escapeHTML(t("apiFallback"))}</div>` : ""}
@@ -1385,12 +1320,6 @@
     }));
 
     search?.addEventListener("input", applyFilter);
-    root.querySelector(".gfd-select")?.addEventListener("change", event => {
-      const lang = event.currentTarget.value;
-      try { localStorage.setItem("gfd-language", lang); } catch (_) {}
-      renderReleaseGrid(repo, data, routeToken);
-    });
-    root.dir = currentLang() === "he" ? "rtl" : "ltr";
   }
 
   async function transformReleasePage() {
@@ -1467,56 +1396,6 @@
       button.title = t("error");
       button.innerHTML = `${ICONS.slash}<span>${escapeHTML(t("download"))}</span>`;
       button.onclick = () => { window.location.assign(releasesUrl(repo)); };
-    }
-  }
-
-  /**
-   * Anchors the Download button inside the toolbar container right before "<> Code".
-   * Idempotent check ensures no unnecessary reflows or DOM manipulations.
-   */
-  function injectDownloadButton() {
-    if (!isRepoRoot()) {
-      document.getElementById(BUTTON_ID)?.remove();
-      return;
-    }
-    const repo = detectRepo();
-    if (!repo) return;
-    ensureStyles();
-
-    const target = findToolbarCodeTarget();
-    if (!target || !target.parent) return;
-
-    let button = document.getElementById(BUTTON_ID);
-    if (button && button.isConnected) {
-      // Idempotency check: if button is already anchored in the correct container, don't touch DOM
-      if (button.parentElement === target.parent && button.nextElementSibling === target.before) {
-        if (button.dataset.evaluatedRepo !== repo.key) {
-          button.dataset.evaluatedRepo = repo.key;
-          updateButtonCompatibility(repo, button);
-        }
-        return;
-      }
-    }
-
-    if (!button) {
-      button = document.createElement("button");
-      button.id = BUTTON_ID;
-      button.type = "button";
-      button.className = "gfd-state-disabled";
-      button.setAttribute("aria-disabled", "true");
-      button.innerHTML = `${ICONS.download}<span>${escapeHTML(t("download"))}</span>`;
-      button.title = t("loading");
-    }
-
-    button.dataset.repo = repo.key;
-
-    if (button.parentElement !== target.parent || button.nextElementSibling !== target.before) {
-      target.parent.insertBefore(button, target.before);
-    }
-
-    if (button.dataset.evaluatedRepo !== repo.key) {
-      button.dataset.evaluatedRepo = repo.key;
-      updateButtonCompatibility(repo, button);
     }
   }
 

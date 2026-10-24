@@ -18,10 +18,10 @@ A lightweight, high-performance browser extension (Manifest V3) that optimizes t
 
 ### ⚙️ Core Mechanics
 
-- **🔀 Homepage Shortcut Injection**
-  Adds a native-looking action button directly to the left of the primary green "Code" dropdown on the repository root directory view.
+- **🔀 Main page download button**
+  Adds a native-looking download button directly to the left of the primary green "Code" dropdown on the repository root directory view.
 
-- **💻 Deterministic Hardware Profiling**
+- **💻 Deterministic OS Detection**
   Queries system properties to detect the active Operating System (Windows, macOS, Linux, Android) and runtime execution architecture (x64, ARM64, Universal).
 
 - **🔍 Regex-Driven Architecture Classification**
@@ -29,6 +29,3 @@ A lightweight, high-performance browser extension (Manifest V3) that optimizes t
 
 - **🛡️ Zero-API Fault Recovery Architecture**
   Maintains an internal memory cache layout to preserve rate limits. If the public GitHub API hits a 403 throttling threshold, the extension automatically transitions to reading the raw page DOM layout to fetch target link parameters.
-
-- **🌐 Bi-Directional Internationalization Interface**
-  Implements full runtime dictionary definitions supporting English (Left-to-Right layout) and Hebrew (Right-to-Left layout) system profiles.

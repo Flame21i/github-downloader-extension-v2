@@ -8,7 +8,7 @@ A lightweight, high-performance browser extension (Manifest V3) that optimizes t
 
 <img width="1024" height="576" alt="image" src="https://github.com/user-attachments/assets/901dfc14-10a2-45e4-a8aa-156d1d2f3c2f" />
 
-### 🛠️ Quick Installation (Video Tutorial)
+# 🛠️ Quick Installation
 
 1. ### Download & Extract the repository 
 

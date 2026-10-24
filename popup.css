@@ -1,0 +1,543 @@
+/* ===== Reset & base ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* CRITICAL: Make the HTML `hidden` attribute actually hide elements, 
+   even if they have `display: flex` or `display: grid` set in CSS */
+[hidden] {
+  display: none !important;
+}
+
+:root {
+  --gfd-bg: #0d1117;
+  --gfd-panel: #161b22;
+  --gfd-panel-2: #21262d;
+  --gfd-border: #30363d;
+  --gfd-border-strong: #8b949e;
+  --gfd-fg: #c9d1d9;
+  --gfd-fg-strong: #f0f6fc;
+  --gfd-muted: #8b949e;
+  --gfd-blue: #58a6ff;
+  --gfd-red: #da3633;
+  --gfd-red-hover: #b32321;
+  --gfd-green: #3fb950;
+  --gfd-green-btn: #238636;
+  --gfd-green-btn-hover: #2ea043;
+  --gfd-yellow: #d29922;
+}
+
+html, body {
+  background: var(--gfd-bg);
+  color: var(--gfd-fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+#gfd-popup-root {
+  width: 380px;
+  max-height: 600px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#gfd-popup-root::-webkit-scrollbar { width: 8px; }
+#gfd-popup-root::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+#gfd-popup-root::-webkit-scrollbar-track { background: transparent; }
+
+/* ===== Header ===== */
+.gfd-popup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--gfd-border);
+  background: var(--gfd-panel);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.gfd-popup-repo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.gfd-popup-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 8px;
+  background: var(--gfd-bg);
+  border: 1px solid var(--gfd-border);
+  color: var(--gfd-blue);
+}
+
+.gfd-popup-repo-text { min-width: 0; }
+
+.gfd-popup-repo-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gfd-fg-strong);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+.gfd-popup-repo-tag {
+  font-size: 11px;
+  color: var(--gfd-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 240px;
+}
+
+.gfd-popup-refresh {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--gfd-border);
+  background: var(--gfd-panel-2);
+  color: var(--gfd-fg);
+  cursor: pointer;
+  flex: 0 0 30px;
+  transition: background-color .12s ease, border-color .12s ease;
+}
+.gfd-popup-refresh:hover { background: var(--gfd-border); border-color: var(--gfd-border-strong); }
+.gfd-popup-refresh.spinning svg { animation: gfd-spin .8s linear infinite; }
+
+@keyframes gfd-spin { to { transform: rotate(360deg); } }
+
+/* ===== Body ===== */
+.gfd-popup-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===== Hero card ===== */
+.gfd-hero-card {
+  border: 1.5px solid var(--gfd-red);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--gfd-panel);
+  box-shadow: 0 2px 8px rgba(218,54,51,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gfd-hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.gfd-rec-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #f85149;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gfd-rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gfd-red);
+  display: inline-block;
+  box-shadow: 0 0 0 3px rgba(218,54,51,0.25);
+}
+
+.gfd-compat-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--gfd-green);
+  background: rgba(63,185,80,0.1);
+  border: 1px solid rgba(63,185,80,0.3);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.gfd-compat-banner svg { flex: 0 0 12px; width: 12px; height: 12px; }
+
+.gfd-hero-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.gfd-hero-details {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.gfd-hero-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 8px;
+  background: var(--gfd-bg);
+  border: 1px solid var(--gfd-border);
+  color: var(--gfd-fg);
+}
+.gfd-hero-icon svg { width: 20px; height: 20px; }
+
+.gfd-hero-text { min-width: 0; flex: 1; }
+
+.gfd-hero-name {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  color: var(--gfd-blue);
+  text-decoration: none;
+}
+.gfd-hero-name:hover { text-decoration: underline; }
+
+.gfd-hero-meta {
+  display: flex;
+  gap: 6px 10px;
+  flex-wrap: wrap;
+  color: var(--gfd-muted);
+  font-size: 11px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.gfd-btn-hero-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 16px;
+  background: var(--gfd-red) !important;
+  border: 1px solid var(--gfd-red) !important;
+  border-radius: 6px;
+  color: #ffffff !important;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: background-color .12s ease, transform .1s ease;
+  cursor: pointer;
+}
+.gfd-btn-hero-download:hover {
+  background: var(--gfd-red-hover) !important;
+  border-color: var(--gfd-red-hover) !important;
+  transform: translateY(-1px);
+  color: #ffffff !important;
+}
+
+/* ===== Source strip ===== */
+.gfd-source-strip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.gfd-source-label {
+  font-size: 11.5px;
+  color: var(--gfd-muted);
+  font-weight: 500;
+}
+.gfd-source-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--gfd-green-btn) !important;
+  color: #ffffff !important;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-decoration: none !important;
+  border: 1px solid var(--gfd-green-btn-hover) !important;
+  transition: background-color .12s ease;
+  white-space: nowrap;
+}
+.gfd-source-btn:hover {
+  background: var(--gfd-green-btn-hover) !important;
+  color: #ffffff !important;
+}
+
+/* ===== Grey button ===== */
+.gfd-btn-github-grey {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--gfd-panel-2) !important;
+  border: 1px solid var(--gfd-border) !important;
+  border-radius: 6px;
+  padding: 6px 12px;
+  color: var(--gfd-fg) !important;
+  font: 600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  cursor: pointer;
+  transition: background-color .12s ease, border-color .12s ease;
+  text-decoration: none !important;
+  align-self: flex-start;
+}
+.gfd-btn-github-grey:hover {
+  background: var(--gfd-border) !important;
+  border-color: var(--gfd-border-strong) !important;
+  color: var(--gfd-fg-strong) !important;
+}
+.gfd-btn-github-grey svg { transition: transform .18s ease; }
+.gfd-btn-github-grey[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* ===== Other assets panel ===== */
+.gfd-other-assets-box {
+  padding-top: 12px;
+  border-top: 1px dashed var(--gfd-border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gfd-tabs {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.gfd-tab {
+  border: 1px solid var(--gfd-border);
+  border-radius: 6px;
+  padding: 3px 9px;
+  background: var(--gfd-panel);
+  color: inherit;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.gfd-tab[aria-pressed="true"] {
+  background: #1f6feb;
+  border-color: var(--gfd-blue);
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.gfd-assets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gfd-section-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--gfd-fg);
+  margin: 4px 0 6px;
+}
+.gfd-section-head svg { width: 13px; height: 13px; flex: 0 0 13px; }
+.gfd-count { color: var(--gfd-muted); font-weight: 400; font-size: 10.5px; }
+
+.gfd-card {
+  border: 1px solid var(--gfd-border);
+  border-radius: 7px;
+  padding: 9px 10px;
+  background: var(--gfd-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  transition: border-color .12s ease;
+}
+.gfd-card:hover { border-color: var(--gfd-blue); }
+
+.gfd-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.gfd-icon {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  border-radius: 6px;
+  background: var(--gfd-bg);
+  border: 1px solid var(--gfd-border);
+  color: var(--gfd-fg);
+}
+.gfd-icon svg { width: 14px; height: 14px; }
+
+.gfd-file-info { min-width: 0; flex: 1; }
+
+.gfd-file-name {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+  color: var(--gfd-blue);
+}
+.gfd-file-name:hover { text-decoration: underline; }
+
+.gfd-meta {
+  display: flex;
+  gap: 5px 8px;
+  flex-wrap: wrap;
+  color: var(--gfd-muted);
+  font-size: 10.5px;
+  margin-top: 3px;
+}
+
+.gfd-tag {
+  border: 1px solid var(--gfd-border);
+  border-radius: 99px;
+  padding: 0 5px;
+  font-size: 9.5px;
+  white-space: nowrap;
+}
+
+.gfd-card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.gfd-download-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none !important;
+  white-space: nowrap;
+  background: var(--gfd-panel-2) !important;
+  border: 1px solid var(--gfd-border) !important;
+  color: var(--gfd-fg) !important;
+  transition: background-color .12s ease, border-color .12s ease;
+}
+.gfd-download-secondary:hover {
+  background: var(--gfd-border) !important;
+  border-color: var(--gfd-border-strong) !important;
+  color: var(--gfd-fg-strong) !important;
+}
+.gfd-download-secondary svg { width: 11px; height: 11px; }
+
+/* ===== States ===== */
+.gfd-popup-loading,
+.gfd-popup-empty {
+  padding: 28px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  color: var(--gfd-muted);
+}
+
+.gfd-popup-loading {
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gfd-popup-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--gfd-border);
+  border-top-color: var(--gfd-blue);
+  animation: gfd-spin .8s linear infinite;
+}
+
+.gfd-popup-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--gfd-panel);
+  border: 1px solid var(--gfd-border);
+  color: var(--gfd-muted);
+  margin-bottom: 4px;
+}
+
+.gfd-popup-empty-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gfd-fg);
+}
+
+.gfd-popup-empty-sub {
+  font-size: 11.5px;
+  color: var(--gfd-muted);
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* ===== Warning banner ===== */
+.gfd-popup-warn {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(210,153,34,0.4);
+  background: rgba(210,153,34,0.08);
+  border-radius: 7px;
+  color: #e3b341;
+  font-size: 11.5px;
+}
+.gfd-popup-warn svg { flex: 0 0 16px; margin-top: 1px; }
+.gfd-popup-warn strong { display: block; font-size: 12px; margin-bottom: 2px; }
+.gfd-popup-warn-sub { color: var(--gfd-muted); font-size: 11px; }
+
+/* ===== Compat banner (top of body) ===== */
+.gfd-popup-compat {
+  display: none;
+}
+
+/* ===== Footer ===== */
+.gfd-popup-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--gfd-border);
+  font-size: 11px;
+  color: var(--gfd-muted);
+}
+.gfd-popup-foot a { color: var(--gfd-blue); text-decoration: none; }
+.gfd-popup-foot a:hover { text-decoration: underline; }
+.gfd-popup-foot-meta { font-size: 10.5px; white-space: nowrap; }
